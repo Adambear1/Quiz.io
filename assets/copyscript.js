@@ -15,9 +15,9 @@ const questions = [
     //2
     question: 'What is an event listener in JS?',
     answers: [
-        {text: 'A conditional statement that runs only if true', correct: false},
+        {text: 'A direct conditional statement that runs only if true', correct: false},
         {text: 'A loop that is ran, requiring variable input that is ran until condition is met', correct: false},
-        {text: 'A form of action, either click, hover, or keypress, that calls a function when executed', correct: true},
+        {text: 'A form of action, either click, hover, or keypress, that calls a function when executed by the user', correct: true},
         {text: 'A submission box that is stored in the local storage and retrieved when called upon', correct: false}
         ],
     difficulty: 'Medium',
@@ -73,10 +73,65 @@ const questions = [
 
 var points = document.querySelector("#point-counter");
 var count = localStorage.getItem("count");
-var submitBtn = document.querySelector("#submit-btn");
 var answerButtonElement = document.querySelector('answer-buttons');
 var answerBtn = document.querySelector("#answer-buttons");
-var difficulty = document.querySelector('.difficulty')
+var difficulty = document.querySelector('.difficulty');
+var userName = document.querySelector('#input');
+var submitBtn = document.querySelector('.button');
+var msgDiv = document.querySelector('.msg');
+var timer = document.querySelector('#timer');
+var history = document.querySelector('.history');
+var interface = document.querySelector(".bg-modal");
+var li = document.createElement("li");
+var hiscores = document.querySelector("#lastNums")
+
+
+var inputArray = {
+    name: userName,
+}
+
+document.querySelector(".close").addEventListener('click', function(){
+    interface.style.display = 'none';
+});
+
+// 
+
+// function writeHighScore() {
+//     var score = 
+// }
+
+
+// 
+function displayMessage(type, message){
+    msgDiv.textContent = message;
+    msgDiv.setAttribute('class', type);
+}
+
+// function endGame (){
+//     interface.style.display = 'inline-block';
+//     displayMessage("success", "Game Over!");
+//     var highscores = JSON.parse(localStorage.getItem("username:"))
+
+// }
+
+submitBtn.addEventListener("click", function(event){
+    event.preventDefault();
+    if (inputArray.name.value === "") {
+        displayMessage("error", "Enter valid username");
+    }
+    else {
+        document.querySelector(".bg-modal").style.display = 'none';
+        localStorage.setItem("username:", userName);
+        }    
+});
+
+
+
+
+
+
+
+
 
 
 //Function to generate a random index number the length of the question list; non-repetitive.
@@ -189,7 +244,7 @@ function nextQuestion() {
 
 nextQuestion()
 
-points.textContent = 0
+points.textContent
 
 console.log(points)
 
@@ -228,7 +283,13 @@ answer4.addEventListener("click", function() {
 
 
 
-
+    function endGame (){
+        interface.style.display = 'inline-block';
+        displayMessage("success", "Game Over!");
+        var nameOfPlayer = JSON.parse(localStorage.getItem("username:"))
+        localStorage.setItem("score:", points.textCount)
+        lastNums.innerHTML += <li> + nameOfPlayer + ":  "+ points.textCount + </li>
+    }
 
 
 

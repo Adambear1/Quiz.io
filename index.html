@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <div class="question-container">
-            <div><h4>Points: <span id="point-counter">0</span><span class = "difficulty">Difficulty:</span></span></h4></div>
+            <div><h4>Points: <span id="point-counter">0</span><span id="timer">timer</span><span class = "difficulty">Difficulty:</span></h4></div>
             <div></div>
             <div id="question"><h2></h2></div>
             <div id="answers" class="btn-grid">
@@ -27,7 +27,29 @@
             </div> -->
         </div>  
     </div>
+<!-- Modal Practice -->
+<div class="bg-modal">
+    <div class="modal-content">
+        <div class="close">+</div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTAebPkT99_wRUcm8z2B8y8cNW6sQWeajQu-LEFJpE0p0Sa8cWk" alt="">
+        <form action="">
+            <input type="text" placeholder="User Name" id="input" name="input"></input>   
+            <div class="msg"></div>
+            <!-- Timer is set for 3 seconds -->
+            <a href="" class="button" onclick="setTimeout(endGame,30000);">Submit</a>
+            <div class="history" style="margin-top: 10px;">
+                <ol id="previous_passwords">
+                  <b style = "margin-right:40px">Hiscores</b>
+                  <br>
+                  <div id="lastNums">
+                </ol>
+              </div>
+        </form>
+    </div>
+</div>
+<!--  -->
 
 <script src="assets/copyscript.js"></script>
+
 </body>
 </html>
