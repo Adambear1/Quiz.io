@@ -1,4 +1,13 @@
-// question constants to retrieve later. questions[0].question
+//NEED TO DO::
+
+//1) Local storage:
+    //Store username input + final score into local storage 
+    //Concatinate and add to 'hiscores' on main interface
+//2) When game is over, have main interface be centered
+//3) Have Timer centered on card
+//3) Ammend endGame() to have it reset timer 
+//4) Allow for user to hit 'enter' to submit username
+
 const questions = [
     {
     //1
@@ -72,7 +81,8 @@ const questions = [
 
 
 var points = document.querySelector("#point-counter");
-var count = localStorage.getItem("count");
+// var count = localStorage.getItem("count");
+
 var answerButtonElement = document.querySelector('answer-buttons');
 var answerBtn = document.querySelector("#answer-buttons");
 var difficulty = document.querySelector('.difficulty');
@@ -83,23 +93,48 @@ var timer = document.querySelector('#timer');
 var history = document.querySelector('.history');
 var interface = document.querySelector(".bg-modal");
 var li = document.createElement("li");
-var hiscores = document.querySelector("#lastNums")
+var highscores = document.querySelector("#lastNums"); 
 
-
-var inputArray = {
-    name: userName,
-}
 
 document.querySelector(".close").addEventListener('click', function(){
     interface.style.display = 'none';
 });
 
-// 
 
-// function writeHighScore() {
-//     var score = 
-// }
+//TIMER
+//Needs to have it run when 'submit' button is clicked on the main page. 
+//Once timer === 0; then 'endGame()' function is triggered and game resets
 
+function endGame (){
+    interface.style.display = 'inline-block';
+    displayMessage("success", "Game Over!");
+    // var nameOfPlayer = JSON.parse(localStorage.getItem("username"));
+    
+    // var finalScore = localStorage.getItem("score")
+    document.getElementById("lastNums").innerHTML += "<li>" + JSON.parse(localStorage.getItem("username")) + ':  ' + localStorage.getItem("score") + "</li>"
+    location.reload();
+
+    console.log(nameOfPlayer);
+}
+
+
+let time = 5;
+
+
+function countDown() {
+    const seconds = time % 60
+
+    timer.innerHTML = seconds;
+    if(time >= 1){
+        time--;
+    }
+    else {
+        console.log(points)
+        Number(localStorage.setItem("score", points.textContent));
+        endGame();
+        // location.reload();
+    }
+}
 
 // 
 function displayMessage(type, message){
@@ -107,30 +142,20 @@ function displayMessage(type, message){
     msgDiv.setAttribute('class', type);
 }
 
-// function endGame (){
-//     interface.style.display = 'inline-block';
-//     displayMessage("success", "Game Over!");
-//     var highscores = JSON.parse(localStorage.getItem("username:"))
 
-// }
 
 submitBtn.addEventListener("click", function(event){
     event.preventDefault();
-    if (inputArray.name.value === "") {
+    if (userName.value === "") {
         displayMessage("error", "Enter valid username");
+        console.log(inputArray.name.value)
     }
     else {
+        setInterval(countDown, 1000);
         document.querySelector(".bg-modal").style.display = 'none';
-        localStorage.setItem("username:", userName);
+        JSON.stringify(localStorage.setItem("username", JSON.stringify(userName.value)));
         }    
 });
-
-
-
-
-
-
-
 
 
 
@@ -244,12 +269,19 @@ function nextQuestion() {
 
 nextQuestion()
 
-points.textContent
+// //sound effects
+// var audioElement = document.createElement("audio");
+// audioElement.setAttribute("src", "assets/correct.mp3");
 
-console.log(points)
+
+
+
+points.textContent = 0
+
 
 answer1.addEventListener("click", function() {
     if (answer1.correct){
+        // audioElement.play()
         nextQuestion();
         points.textContent++;
     }
@@ -258,6 +290,7 @@ answer1.addEventListener("click", function() {
     }})
 answer2.addEventListener("click", function() {
     if (answer2.correct){
+        // audioElement.play()
         nextQuestion();
         points.textContent++;
     }
@@ -266,6 +299,7 @@ answer2.addEventListener("click", function() {
     }})
 answer3.addEventListener("click", function() {
     if (answer3.correct){
+        // audioElement.play()
         nextQuestion();
         points.textContent++;
     }
@@ -274,22 +308,13 @@ answer3.addEventListener("click", function() {
     }})
 answer4.addEventListener("click", function() {
     if (answer4.correct){
+        // audioElement.play()
         nextQuestion();
         points.textContent++;
     }
     else{
         answer4.classList.add('hide')
     }})   
-
-
-
-    function endGame (){
-        interface.style.display = 'inline-block';
-        displayMessage("success", "Game Over!");
-        var nameOfPlayer = JSON.parse(localStorage.getItem("username:"))
-        localStorage.setItem("score:", points.textCount)
-        lastNums.innerHTML += <li> + nameOfPlayer + ":  "+ points.textCount + </li>
-    }
 
 
 
