@@ -180,6 +180,12 @@ img {
   float: left;
 }
 
+.history li{
+  text-align: center;
+}
+
+
+
 
 .error {
   visibility: visible;

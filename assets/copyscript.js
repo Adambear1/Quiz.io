@@ -1,13 +1,4 @@
-//NEED TO DO::
-
-//1) Local storage:
-    //Store username input + final score into local storage 
-    //Concatinate and add to 'hiscores' on main interface
-//2) When game is over, have main interface be centered
-//3) Have Timer centered on card
-//3) Ammend endGame() to have it reset timer 
-//4) Allow for user to hit 'enter' to submit username
-
+// An array of indexes, which each contain a question, answer, and level of difficulty per question.
 const questions = [
     {
     //1
@@ -75,14 +66,54 @@ const questions = [
         ],
     difficulty: 'Medium',
     },
+    //7
+    {question: 'What are the primary programming languages that are invovled in full stack development?',
+    answers: [
+        {text: 'HTML, CSS, Tensorflow', correct: false},
+        {text: 'HTML, CSS, Javascript', correct: true},
+        {text: 'HTML, Javascript, Python', correct: false},
+        {text: 'HTML, CSS, Wordpress', correct: false},
+    ],
+    difficulty: 'Easy',
+    },
+    //8
+    {question: 'In Bootstrap, what is the proper syntax to apply a specific number of columns to a defined row?',
+    answers: [
+        {text: 'column-lg-3', correct: false},
+        {text: 'column-large-12', correct: false},
+        {text: 'col-large-1', correct: false},
+        {text: 'col-lg-4', correct: true},
+    ],
+    difficulty: 'Medium',
+    },
+    //9
+    {
+    question: 'In Bootstrap, what is the difference between a fluid layout and a fixed layout?',
+    answers: [
+        {text: 'A fluid layout covers the entire screen, no matter the screens dimensions, while a fixed layout only covers the standard screens width of 940px', correct: true},
+        {text: 'A fluid layout allows for animations and special effects to be applied by the developer, while a fixed layout remains stagnant and cannot have any additional effects added', correct: false},
+        {text: 'A fluid layout is only avaible for Bootstrap Premium, which automatically updates all internal code for when HTML, CSS, or Javascript update, while fixed layout does not', correct: false},
+        {text: 'There is no difference, both are used for a responsive design', correct: false},
+        
+    ],
+    },
+    //10
+    {
+    question: 'In CSS, how is a class element retrieved?',
+    answers: [
+        {text: " '//' ", correct: false},
+        {text: " '#' ", correct: false},
+        {text: " '.' ", correct: true},
+        {text: " ' @ ' ", correct: false},
+    ],
 
+    }
 
 ]
 
+//Set of global variables defined that to be used later
 
 var points = document.querySelector("#point-counter");
-// var count = localStorage.getItem("count");
-
 var answerButtonElement = document.querySelector('answer-buttons');
 var answerBtn = document.querySelector("#answer-buttons");
 var difficulty = document.querySelector('.difficulty');
@@ -92,68 +123,83 @@ var msgDiv = document.querySelector('.msg');
 var timer = document.querySelector('#timer');
 var history = document.querySelector('.history');
 var interface = document.querySelector(".bg-modal");
+var container = document.querySelector(".container")
 var li = document.createElement("li");
 var highscores = document.querySelector("#lastNums"); 
+var questionCard = document.querySelector('#question')
 
+
+// Close Button on main interface to 'hide' the test if user does not input a correct name
 
 document.querySelector(".close").addEventListener('click', function(){
+    //Adds style to interface and main container to hide
     interface.style.display = 'none';
+    container.style.display = 'none';
+
+
+    // meme.setAttribute("src", "https://media2.giphy.com/media/TfKfqjt2i4GIM/giphy.webp?cid=ecf05e471ec2a813dad2f1fbb25d0e8d8f9ec97b9fe56716&rid=giphy.webp");
 });
 
 
-//TIMER
-//Needs to have it run when 'submit' button is clicked on the main page. 
-//Once timer === 0; then 'endGame()' function is triggered and game resets
+// Function to end the game when time = 0 (called later)
 
 function endGame (){
-    interface.style.display = 'inline-block';
+    // interface.classList.remove("hide")
+    // interface.style.display = 'inline-block';
+    //Displays message that game is over
     displayMessage("success", "Game Over!");
-    // var nameOfPlayer = JSON.parse(localStorage.getItem("username"));
-    
-    // var finalScore = localStorage.getItem("score")
-    document.getElementById("lastNums").innerHTML += "<li>" + JSON.parse(localStorage.getItem("username")) + ':  ' + localStorage.getItem("score") + "</li>"
+    //Prints to screen user name & score on "highscore" tab
+    //Currently disabled due to bug in system which is being worked on
+    document.getElementById("lastNums").innerHTML += "<li>" + JSON.parse(localStorage.getItem("username")) + ':  ' + localStorage.getItem("score") + "</li>";
+    //Reloads sceen when game is over.
     location.reload();
-
-    console.log(nameOfPlayer);
 }
 
+//Time is set to 15 seconds
+let time = 15;
 
-let time = 5;
-
-
+//In-game clock
 function countDown() {
+    //setting constant seconds to input to seconds
     const seconds = time % 60
-
+    //Replaces timer in HTMl to seconds displayed
     timer.innerHTML = seconds;
+    //Conditional to show if time is at least one, then time is to deduct one second per iteration.
     if(time >= 1){
         time--;
     }
+    //Else, once clock is less than one second, then total points is added to local storage, and game is over.
     else {
-        console.log(points)
         Number(localStorage.setItem("score", points.textContent));
         endGame();
         // location.reload();
-    }
+        }
 }
 
-// 
+// Function defined of displaying fun messages for when game is over & when user input is invalid
 function displayMessage(type, message){
     msgDiv.textContent = message;
     msgDiv.setAttribute('class', type);
 }
 
 
-
+//Submit button on main interface
 submitBtn.addEventListener("click", function(event){
     event.preventDefault();
+    //If clicked and username is blank, then notify that username is invalid
     if (userName.value === "") {
         displayMessage("error", "Enter valid username");
         console.log(inputArray.name.value)
     }
+    //If at least one character is inputted, then start countdown and decrease at one second per iteration.
     else {
         setInterval(countDown, 1000);
-        document.querySelector(".bg-modal").style.display = 'none';
+        //Hides the interface
+        interface.style.display = 'none';
+        //Stores the username to local storage
         JSON.stringify(localStorage.setItem("username", JSON.stringify(userName.value)));
+        //Starts game, defined later
+        startGame()
         }    
 });
 
@@ -177,61 +223,55 @@ function shuffle(questions) {
 
 
 }
-
-shuffle(questions)
-//Shuffles question list
-// shuffle()
+//Defining variable of calling function to the displayed index above.
 var ranQuestion = shuffle(questions)
-//Retrieves length of list
-var ranQuestionLength = ranQuestion.length
-
 console.log(ranQuestion)
 
 
-console.log(ranQuestionLength)
-console.log(questions.length)
-
-
-
-//for loop to go through all shuffled questions
+//
+function startGame(){
+    //for loop to go through all shuffled questions per iteration
 for (var i = 0; i < questions.length; i++) {
     //setting variable to question of random answer
     var question = ranQuestion[i].question;
     console.log(question)
+    //Nested for loop so when random, non-repetitive question is displayed [i], then affiliated answer with question [j] can be displayed as well
+    //Nested for loop of [j] specifically for question, where values and iteration of J is +1 for each for loop so one answer is not displayed for all possible answers
+            //Instead, it takes first answer, randomizes it, and puts it in button 1 for answer, then takes remaining answers and puts in next button, etc.
     for (var j = 0; j < 1; j++){
         var answer = ranQuestion[i].answers[j];
         var answerText = answer.text;
-        var answerCorrect = answer.correct;
-        var questionCard = document.querySelector('#question')
         var answer1 = document.querySelector("#button1")
+        questionCard.textContent = question;
         answer1.textContent = answerText;
         answer1.correct = ranQuestion[i].answers[j].correct
     }
     for (var j = 1; j < 2; j++){
         var answer = ranQuestion[i].answers[j];
         var answerText = answer.text;
-        var answerCorrect = answer.correct;
         var answer2 = document.querySelector("#button2")
+        questionCard.textContent = question;
         answer2.textContent = answerText;
         answer2.correct = ranQuestion[i].answers[j].correct
     }
     for (var j = 2; j < 3; j++){
         var answer = ranQuestion[i].answers[j];
         var answerText = answer.text;
-        var answerCorrect = answer.correct;
-        var answer3 = document.querySelector("#button3")
+        var answer3 = document.querySelector("#button3");
+        questionCard.textContent = question;
         answer3.textContent = answerText;
         answer3.correct = ranQuestion[i].answers[j].correct
     }
     for (var j = 3; j < 4; j++){
         var answer = ranQuestion[i].answers[j];
         var answerText = answer.text;
-        var answerCorrect = answer.correct;
         var answer4 = document.querySelector("#button4")
         questionCard.textContent = question;
         answer4.textContent = answerText;    
         answer4.correct = ranQuestion[i].answers[j].correct    
     }
+   
+    //Console log to test loops
     console.log(answer1) 
     console.log(answer1.correct)
     console.log(ranQuestion[i].answers[1].correct) 
@@ -242,23 +282,37 @@ for (var i = 0; i < questions.length; i++) {
     console.log(answer4.correct)
 };
 
+
+
+// k = number of guesses/arbitrary length of game, once 100+, then game is effectively over.
+        //Prevents random/rapid fire answers from user
+        //Starts at 0, and is addded for each question guess
 var k = 0;
+// nextQuestion function to show next card, called later
 function nextQuestion() {
-    if (k === 5){
+    if (k === 100){
         k = 0;
     }else {
         k++;
+        //
+        // questionCard.textContent = ranQuestion[k].question;
 
+        //Assigns the question, difficulty, and possible answers to each card once the previous question is correctly answered
+        //Assigns text value to question
         questionCard.textContent = ranQuestion[k].question;
+        //Assigns text value to difficulty
         difficulty.textContent = ranQuestion[k].difficulty;
+        //Assigns text value to answers
         answer1.textContent = ranQuestion[k].answers[0].text;
         answer2.textContent = ranQuestion[k].answers[1].text;
         answer3.textContent = ranQuestion[k].answers[2].text;
         answer4.textContent = ranQuestion[k].answers[3].text;
+        //Assigns correct value (to check if answer is corred [hiddent to user on interface]) to question
         answer1.correct = ranQuestion[k].answers[0].correct;
         answer2.correct = ranQuestion[k].answers[1].correct;
         answer3.correct = ranQuestion[k].answers[2].correct;
         answer4.correct = ranQuestion[k].answers[3].correct;
+        //Reveals all hidden answers (displayed later)
         answer1.classList.remove('hide')
         answer2.classList.remove('hide')
         answer3.classList.remove('hide')
@@ -275,10 +329,14 @@ nextQuestion()
 
 
 
-
+// Assigns points for correct answers
 points.textContent = 0
 
-
+//Assigns in-game values to all possible answers
+        //If correct, then a point is added and next question shown.
+        //If incorrect, then wrongg answer is hidden
+                //Same conditional statement for each possible answer
+                    //**** Added audio as well, but could not find free sample, so insert and commented out a demo with voicemarks just to show how it would be applied if needed
 answer1.addEventListener("click", function() {
     if (answer1.correct){
         // audioElement.play()
@@ -314,12 +372,11 @@ answer4.addEventListener("click", function() {
     }
     else{
         answer4.classList.add('hide')
-    }})   
+    }})
+}
 
 
 
 
-
-
-
+// (-:
 
