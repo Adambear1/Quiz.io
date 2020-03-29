@@ -99,7 +99,7 @@ const questions = [
     },
     //10
     {
-    question: 'In CSS, how is a class element retrieved?',
+    question: 'What is a proper call function to retrieve a class element when using CSS?',
     answers: [
         {text: " '//' ", correct: false},
         {text: " '#' ", correct: false},
@@ -110,6 +110,11 @@ const questions = [
     }
 
 ]
+
+//calling var userName from username input
+//calling var points from point-counter 
+
+
 
 //Set of global variables defined that to be used later
 
@@ -125,11 +130,11 @@ var history = document.querySelector('.history');
 var interface = document.querySelector(".bg-modal");
 var container = document.querySelector(".container")
 var li = document.createElement("li");
-var highscores = document.querySelector("#lastNums"); 
 var questionCard = document.querySelector('#question')
 
 
 // Close Button on main interface to 'hide' the test if user does not input a correct name
+
 
 document.querySelector(".close").addEventListener('click', function(){
     //Adds style to interface and main container to hide
@@ -143,20 +148,40 @@ document.querySelector(".close").addEventListener('click', function(){
 
 // Function to end the game when time = 0 (called later)
 
-function endGame (){
-    // interface.classList.remove("hide")
+function endGame() {
+    // Displays message that game is over -- will only be used if able to break out of infinite for loop that is called when game is over is fixed.
+
     // interface.style.display = 'inline-block';
-    //Displays message that game is over
-    displayMessage("success", "Game Over!");
-    //Prints to screen user name & score on "highscore" tab
-    //Currently disabled due to bug in system which is being worked on
-    document.getElementById("lastNums").innerHTML += "<li>" + JSON.parse(localStorage.getItem("username")) + ':  ' + localStorage.getItem("score") + "</li>";
-    //Reloads sceen when game is over.
+    // displayMessage("success", "Game Over!");
     location.reload();
 }
 
+
+//Displays highscores when game is completed
+
+function startGame() {
+    document.readyState()
+}
+
+$( document ).ready(function() {
+    if(JSON.parse(localStorage.getItem("username")) == null) {
+        document.getElementById("lastNums").innerHTML += "<h4>" + "No highscores!  :-(" + "</h4>"
+    } else{
+        document.getElementById("lastNums").innerHTML += "<h4 class='hs'>" + "<iframe src='https://giphy.com/embed/olAik8MhYOB9K' width='280'' height='230' frameBorder='0' class='giphy-embed' allowFullScreen></iframe><p>" + "<a href='https://giphy.com/gifs/life-gets-down-olAik8MhYOB9K'></a></p>" + JSON.parse(localStorage.getItem("username")) + ':  ' + localStorage.getItem("highscore") + "</h4>";       
+    }
+});  
+
+
+
 //Time is set to 15 seconds
-let time = 15;
+
+
+
+var highscore = localStorage.getItem("highscore")
+
+let time = 30;
+
+
 
 //In-game clock
 function countDown() {
@@ -170,7 +195,15 @@ function countDown() {
     }
     //Else, once clock is less than one second, then total points is added to local storage, and game is over.
     else {
-        Number(localStorage.setItem("score", points.textContent));
+        if(points.textContent !== null){
+            if(points.textContent > highscore) {
+                Number(localStorage.setItem("highscore", points.textContent));
+            }
+        }
+        else{
+            localStorage.setItem("highscore", points.textContent)
+        }
+        // Number(localStorage.setItem("score", points.textContent));
         endGame();
         // location.reload();
         }
@@ -290,10 +323,13 @@ for (var i = 0; i < questions.length; i++) {
 var k = 0;
 // nextQuestion function to show next card, called later
 function nextQuestion() {
-    if (k === 100){
+    if (k == questions.length -1){
         k = 0;
+        points.textContent ++
     }else {
-        k++;
+        k += 1;
+        points.textContent ++
+        console.log(k)
         //
         // questionCard.textContent = ranQuestion[k].question;
 
@@ -333,7 +369,7 @@ nextQuestion()
 points.textContent = 0
 
 //Assigns in-game values to all possible answers
-        //If correct, then a point is added and next question shown.
+        //If correct, nextQuestion is ran.
         //If incorrect, then wrongg answer is hidden
                 //Same conditional statement for each possible answer
                     //**** Added audio as well, but could not find free sample, so insert and commented out a demo with voicemarks just to show how it would be applied if needed
@@ -341,7 +377,6 @@ answer1.addEventListener("click", function() {
     if (answer1.correct){
         // audioElement.play()
         nextQuestion();
-        points.textContent++;
     }
     else{
         answer1.classList.add('hide')
@@ -350,7 +385,6 @@ answer2.addEventListener("click", function() {
     if (answer2.correct){
         // audioElement.play()
         nextQuestion();
-        points.textContent++;
     }
     else{
         answer2.classList.add('hide')
@@ -359,7 +393,6 @@ answer3.addEventListener("click", function() {
     if (answer3.correct){
         // audioElement.play()
         nextQuestion();
-        points.textContent++;
     }
     else{
         answer3.classList.add('hide')
@@ -368,7 +401,6 @@ answer4.addEventListener("click", function() {
     if (answer4.correct){
         // audioElement.play()
         nextQuestion();
-        points.textContent++;
     }
     else{
         answer4.classList.add('hide')
