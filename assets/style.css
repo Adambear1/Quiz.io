@@ -22,6 +22,16 @@ body {
 
 }
 
+
+
+.fa-cloud-sun {
+  float: right;
+}
+
+.appear{
+  display: inline;
+}
+
 body.correct {
   --hue: var(--hue-correct);
 }
